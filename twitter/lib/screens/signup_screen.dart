@@ -42,7 +42,7 @@ class _SignUpState extends State<SignUp> {
           leading: BackButton(
             color: Colors.blue,
             onPressed: (() {
-              //back arrow redirect
+               Navigator.of(context).pop();
             }),
           ),
           elevation: 0.0,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:twitter/screens/signup_screen.dart';
 import 'package:twitter/widgets/flat_button.dart';
 import '../widgets/entry_field.dart';
+import 'forgot_password_screen.dart';
 
 class SingIn extends StatefulWidget {
   const SingIn({super.key});
@@ -76,7 +78,10 @@ class _SingInState extends State<SingIn> {
           ),
           GestureDetector(
             onTap: (() {
-             //for sign up redirect
+             Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SignUp()),
+              );
             }),
             child: Center(
               child: Text('Sign up',
@@ -93,7 +98,10 @@ class _SingInState extends State<SingIn> {
           ),
           GestureDetector(
             onTap: (() {
-              //for forget password redirect
+               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ForgetPassword()),
+              );
             }),
             child: Center(
               child: Text('Forget password?',

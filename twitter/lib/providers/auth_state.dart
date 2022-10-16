@@ -45,4 +45,8 @@ class Auth extends ChangeNotifier {
     notifyListeners();
     return new SingIn();
 }
+
+  Future<String?> getCurrentUserModel() async {
+    return auth.currentUser.uid;
+  }
 }

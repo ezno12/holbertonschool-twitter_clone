@@ -43,6 +43,7 @@ class _SideBarMenuState extends State<SideBarMenu> {
                           contentPadding: EdgeInsets.zero,
                           title: const Text(
                             "User Name",
+                            
                             style: TextStyle(
                               color: Colors.black45,
                               fontSize: 15,

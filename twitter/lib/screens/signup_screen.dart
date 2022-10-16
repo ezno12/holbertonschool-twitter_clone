@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:twitter/widgets/flat_button.dart';
+import '../providers/auth_state.dart';
 import '../widgets/entry_field.dart';
 
 class SignUp extends StatefulWidget {
@@ -86,7 +88,7 @@ class _SignUpState extends State<SignUp> {
                 child: CustomFlatButton(
                   label: "Sing up",
                   onPressed: () {
-                    // for rederect after sgin up
+                    signUpUser();
                   },
                 ),
               ),
@@ -96,5 +98,14 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+  void signUpUser() async {
+    context.read<Auth>().signUpWithEmail(
+          email: _emailController.text,
+          password: _passwordController.text,
+          context: context,
+        );
+    Navigator.pushNamed(context, '/homescreen');
+
   }
 }

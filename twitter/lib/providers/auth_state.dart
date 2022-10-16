@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:twitter/widgets/showSnackbar.dart';
 
+import '../screens/signin_screen.dart';
+
 class Auth extends ChangeNotifier {
   final auth.FirebaseAuth _FirebaseAuth = auth.FirebaseAuth.instance;
 
@@ -37,4 +39,10 @@ class Auth extends ChangeNotifier {
       showSnackBar(context, e.message!); // Display error message
     }
   }
+
+   Future <SingIn> logout()  async{
+    await auth.FirebaseAuth.instance.signOut();
+    notifyListeners();
+    return new SingIn();
+}
 }

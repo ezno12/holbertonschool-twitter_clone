@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:twitter/screens/signup_screen.dart';
 import 'package:twitter/widgets/flat_button.dart';
+import '../widgets/bottom_bar_menu.dart';
 import '../widgets/entry_field.dart';
 import 'forgot_password_screen.dart';
 
@@ -68,7 +69,11 @@ class _SingInState extends State<SingIn> {
             child: CustomFlatButton(
               label: "Submit",
               onPressed: () {
-                //redirect after sumbit to sgin in!!!
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BottomMenuBar()),
+                );
               },
             ),
           ),

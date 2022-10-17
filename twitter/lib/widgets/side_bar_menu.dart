@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
+import '../providers/auth_state.dart';
+
 class SideBarMenu extends StatefulWidget {
   const SideBarMenu({super.key});
 
@@ -10,6 +13,24 @@ class SideBarMenu extends StatefulWidget {
 }
 
 class _SideBarMenuState extends State<SideBarMenu> {
+
+   @override
+  void initState() {
+    super.initState();
+    getAsync();
+  }
+
+  User? user;
+
+  Future<void> getAsync() async {
+    try {
+      user = await Auth().getCurrentUserModel();
+    } catch (e) {
+      print(e);
+    }
+    if (mounted) setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

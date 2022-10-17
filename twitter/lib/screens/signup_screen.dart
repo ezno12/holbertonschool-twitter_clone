@@ -86,10 +86,8 @@ class _SignUpState extends State<SignUp> {
               ),
               Center(
                 child: CustomFlatButton(
-                  label: "Sing up",
-                  onPressed: () {
-                    signUpUser();
-                  },
+                  label: "Submit",
+                  onPressed: signUpUser,
                 ),
               ),
               // ignore: prefer_const_constructors
@@ -99,13 +97,43 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-  void signUpUser() async {
-    context.read<Auth>().signUpWithEmail(
-          email: _emailController.text,
-          password: _passwordController.text,
-          context: context,
-        );
-    Navigator.pushNamed(context, '/homescreen');
 
+  void signUpUser() async {
+    final ifSignUp = await Auth().attemptSignUp(
+        email: _emailController.text.trim(),
+        name: _nameController.text.trim(),
+        password: _passwordController.text.trim(),
+        passwordConfirmation: _confirmController.text.trim()
+    );
+    String errorMsg = '';
+    switch (ifSignUp) {
+      case Errors.none:
+        errorMsg = 'Account Created!';
+        break;
+      case Errors.weakError:
+        errorMsg = 'The password provided is too weak.';
+        break;
+      case Errors.matchError:
+        errorMsg = 'Passwords doesn’t match.';
+        break;
+      case Errors.existsError:
+        errorMsg = 'An account already exists with that email.';
+        break;
+      case Errors.error:
+        errorMsg = 'Failed to Login! Please try later.';
+        break;
+      default:
+        errorMsg = 'Unknown error';
+    }
+    final snackBar = SnackBar(
+      content: Text(errorMsg),
+      backgroundColor: ifSignUp == Errors.none ? Colors.green : Colors.red,
+      action: SnackBarAction(
+        label: '',
+        onPressed: () {
+         },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

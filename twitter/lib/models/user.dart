@@ -15,6 +15,8 @@ final usersRef = FirebaseFirestore.instance.collection('users').withConverter<Us
   toFirestore: (user, _) => user.toJson(),
 );
 
+
+
 class User {
   String key;
   String userID;
@@ -26,6 +28,9 @@ class User {
   int following;
   List<dynamic> followersList;
   List<dynamic> followingList;
+  String bio;
+  String coverImgUrl;
+  bool isVerified;
 
   User({
     String key = '',
@@ -38,6 +43,9 @@ class User {
     int following = 0,
     List<dynamic> followersList = const [],
     List<dynamic> followingList = const [],
+    String bio = 'No bio available',
+    String coverImgUrl = 'https://images.wondershare.com/repairit/aticle/2021/08/twitter-header-photo-issues-1.jpg',
+    bool isVerified = false,
   }) : this._(
     key: uuid.v4(),
     userID: userID,
@@ -49,6 +57,9 @@ class User {
     following: following,
     followersList: followersList,
     followingList: followingList,
+    bio: bio,
+    coverImgUrl: coverImgUrl,
+    isVerified: isVerified,
   );
 
   User._({
@@ -62,6 +73,9 @@ class User {
     required this.following,
     required this.followersList,
     required this.followingList,
+    required this.bio,
+    required this.coverImgUrl,
+    required this.isVerified,
   });
 
   User.fromJson(Map<dynamic, dynamic> map)
@@ -74,7 +88,10 @@ class User {
         followers = map['followers'],
         following = map['following'],
         followersList = map['followersList'],
-        followingList = map['followingList'];
+        followingList = map['followingList'],
+        bio = map['bio'],
+        coverImgUrl = map['coverImgUrl'],
+        isVerified = map['isVerified'];
 
 
   Map<String, dynamic> toJson() => {
@@ -88,5 +105,26 @@ class User {
     'following': following,
     'followersList': followersList,
     'followingList': followingList,
+    'bio': bio,
+    'coverImgUrl': coverImgUrl,
+    'isVerified': isVerified,
   };
+
+  Future<User> getUserByID(String userID) async {
+
+    Query query = usersRef.where("userID", isEqualTo: userID);
+    QuerySnapshot querySnapshot = await query.get();
+
+    return querySnapshot.docs.first.data() as User;
+  }
+
+  Future<List<User>> getUsersListBySearch() async {
+
+    Query query = usersRef.where("userID", isEqualTo: userID);
+
+    QuerySnapshot querySnapshot = await query.get();
+    List<User>? allUsers = querySnapshot.docs.map((doc) => doc.data()).cast<User>().toList();
+
+    return allUsers;
+  }
 }

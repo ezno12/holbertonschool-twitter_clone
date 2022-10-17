@@ -74,4 +74,20 @@ Future attemptLogin({
     }
   }
 
+  Future logout() async {
+    await auth.signOut();
+  }
+
+  Future<User> getCurrentUserModel() async {
+    QuerySnapshot querySnapshot = await usersRef.get();
+    List<User>? allUsers = querySnapshot.docs.map((doc) => doc.data()).cast<User>().toList();
+
+    for (var user in allUsers) {
+      if (user.userID == auth.currentUser?.uid) {
+        return user;
+      }
+    }
+    return {} as User;
+  }
+
 }

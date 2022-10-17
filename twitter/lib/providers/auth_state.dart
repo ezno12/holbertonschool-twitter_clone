@@ -53,4 +53,25 @@ class Auth extends ChangeNotifier {
     }
   }
 
+Future attemptLogin({
+      required String email,
+      required String password,
+  }) async {
+    try {
+      await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return Errors.none;
+    } on f.FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return Errors.noUserError;
+      } else if (e.code == 'wrong-password') {
+        return Errors.wrongError;
+      } else {
+        return Errors.error;
+      }
+    }
+  }
+
 }

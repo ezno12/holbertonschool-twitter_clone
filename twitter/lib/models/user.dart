@@ -127,4 +127,31 @@ class User {
 
     return allUsers;
   }
+
+  Future<void> saveChangesFirebase(User user) async {
+    String userDocID = await getPostReference(user.userID);
+
+    await usersRef.doc(userDocID).update(
+        {
+          'coverImgUrl': user.coverImgUrl,
+          'imageUrl': user.imageUrl,
+          'displayName': user.displayName,
+          'userName': user.userName,
+          'bio': user.bio,
+        }
+    );
+    print('executed update profile');
+  }
+   Future<String> getPostReference(String userID) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where('userID', isEqualTo: userID)
+        .get()
+        .then((value) {
+          for (var element in value.docs) {
+            return element.id;
+          }
+          return '';
+        });
+  }
 }

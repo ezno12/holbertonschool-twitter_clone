@@ -3,16 +3,20 @@ import 'package:twitter/providers/share_state.dart';
 import 'package:twitter/screens/signin_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/providers/auth_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => SharedState()),
        ChangeNotifierProvider(create: (_) => Auth())
     ],
     // ignore: prefer_const_constructors
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/user.dart';
+import '../models/post.dart';
 
 class EditPostScreen extends StatefulWidget {
   final String userID;
@@ -12,6 +13,52 @@ class EditPostScreen extends StatefulWidget {
 class _EditPostScreenState extends State<EditPostScreen> {
   final TextEditingController _tweetController = TextEditingController();
   var data;
+
+  Future addPost() async {
+    var errorValue;
+    bool isError = false;
+    String snackMsg = '';
+
+    if (_tweetController.text == '') {
+      errorValue = Errors.valueError;
+    } else {
+      errorValue = await Post().addPostFirebase(
+          Post(
+            text: _tweetController.text,
+            userID: widget.userID,
+          )
+      );
+    }
+
+    if (errorValue != Errors.none) isError = true;
+
+    switch (errorValue) {
+      case Errors.none:
+        snackMsg = 'Your post has been created.';
+        setState(() {
+          _tweetController.text = '';
+        });
+        break;
+      case Errors.valueError:
+        snackMsg = "Your post can't be empty.";
+        break;
+      case Errors.error:
+        snackMsg = "An error occurred! Try again later";
+        break;
+    }
+
+    final snackBar = SnackBar(
+      content: Text(snackMsg),
+      backgroundColor: isError ? Colors.red : Colors.green,
+      action: SnackBarAction(
+        label: '',
+        onPressed: () {
+          // Some code to undo the change.
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
 
   @override
@@ -40,7 +87,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                   child: ElevatedButton(
-                    onPressed: (){},
+                    onPressed: addPost,
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue,
                       shape: const RoundedRectangleBorder(
